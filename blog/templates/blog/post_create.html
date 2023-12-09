@@ -1,0 +1,58 @@
+<!-- blog/templates/blog/post_create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex justify-center items-center max-w-full">
+<div class="max-w-md flex flex-col items-center bg-gray-100">
+  <div class="text-xl py-2 w-full my-3 bg-indigo-600 text-white text-center">Create a New Post</div>
+  <div class="pl-5">
+  <form method="post" enctype="multipart/form-data" action="{% url 'post_create' %}">
+    {% csrf_token %}
+    <div class="flex-col mb-2">
+      <label for="title" class="block mb-2 text-sm ">{{form.title.label}}</label>
+          <p >
+            <style>
+              #id_title {
+                  /* Add your desired styles here */
+                  padding: 5px;
+                  /* background-color: #010f16;  Blue background color */
+                  /*color: #fff; White text color */
+                  width:400px;
+                  border-style: solid;
+                  border-width: 2px;
+                  border-color: black;
+                  border-radius: 10px;
+              }
+          </style>
+            {{form.title}}</p>
+    </div>
+    <div class="flex-col mb-2">
+      <label for="username" class="block mb-2 text-sm ">{{form.content.label}}</label>
+          <p class="rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white placeholder-gray-900 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500">
+            <style>
+              #id_content {
+                  /* Add your desired styles here */
+                  padding: 5px;
+                  /* background-color: #010f16;  Blue background color */
+                  /*color: #fff; White text color */
+                  width:400px;
+                  border-style: solid;
+                  border-width: 2px;
+                  border-color: black;
+                  border-radius: 10px;
+              }
+          </style>
+            {{form.content}}</p>
+    </div>
+   
+    <br>
+    {{form.image.label}}
+    {{form.image}}
+    <div>
+    <button type="submit" class="bg-indigo-600 text-white w-full my-6 py-2 rounded-lg ">Create Post</button>
+  </div>
+    </form>
+  </div>
+</div>
+</div>
+{% endblock %}

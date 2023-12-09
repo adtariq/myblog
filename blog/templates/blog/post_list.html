@@ -1,0 +1,71 @@
+<!-- blog/templates/blog/post_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="flex-col mt-5">
+  <div class="">
+
+    <script>
+      const text = "🐍Welcome to my portfolio. I am a passionate developer of python django 🔥!";
+      let index = 0;
+      const speed = 100; // Adjust typing speed here
+
+      function typeWriter() {
+        if (index < text.length) {
+          document.getElementById("typewriter").innerHTML += text.charAt(index);
+          index++;
+          setTimeout(typeWriter, speed);
+        }
+      }
+    </script>
+    <div id="typewriter" class="text-3xl font-bold text-center"></div>
+    <script>typeWriter();</script>
+  </div>
+  <div class="flex my-2">
+    <div class="w-1/4 flex justify-center">
+      <a href="{%url 'post_create'%}" class="bg-green-500 text-white text-center py-2 rounded-md w-64 ">Create Post</a>
+    </div>
+    <div class="w-3/4">
+      <h2 class="text-center text-2xl font-bold py-2">Blog Posts</h2>
+    </div>
+  </div>
+  {% for post in posts %}
+  <div class="post flex justify-arround py-2">
+    <div class="w-1/4 ">
+      {% if post.image %}
+      <img src="{{ post.image.url }}" width="300" alt="{{ post.title }}" class="ml-4 h-96">
+      {% endif %}
+    </div>
+    <div class="w-3/4 mx-2 ">
+      <h3 class="text-xl bg-indigo-700 text-white py-3 text-center">{{ post.title }}</h3>
+      <div class="flex-col justify-between p-2">
+        <div>{{ post.content }}</div>
+        <div class="flex justify-between items-center">
+          <p class="font-semibold mt-8 py-1">Posted by {{ post.author.username }} on {{ post.created_at }}</p>
+          <a href="{% url 'post_detail' pk=post.pk %} " class="text-indigo-700 font-bold float-right ">Read more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Pagination -->
+  <div class="pagination text-center my-5">
+    <span class="step-links">
+      {% if posts.has_previous %}
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ posts.previous_page_number }}">previous</a>
+      {% endif %}
+      <span class="current">
+        Page <span class="font-semibold px-3 border border-3 border-black">{{ posts.number }}</span> of <span
+          class="font-semibold px-3 border border-3 border-black"> {{ posts.paginator.num_pages }}</span>
+        {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}">next</a>
+        <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+  </div>
+</div>
+{% endblock %}

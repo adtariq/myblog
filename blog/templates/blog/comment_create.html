@@ -1,0 +1,15 @@
+<!-- blog/templates/blog/comment_create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Add a Comment</h2>
+  {% if post.pk %}{{ post.pk }}{% else %}No post.pk value{% endif %}
+  {# Temporary debug statement to print the URL #}
+{% url 'rate_post' pk=post.pk as rate_post_url %}
+<p>Debug: Rate Post URL: {{ rate_post_url }}</p>
+  <form method="post" action="{% url 'comment_create' pk=post.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Comment</button>
+  </form>
+{% endblock %}

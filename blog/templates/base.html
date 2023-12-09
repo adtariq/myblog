@@ -1,0 +1,91 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{%block title%}Blog{%endblock%}</title>
+  <link rel="stylesheet" href="{%static 'css/pyscript.css'%}">
+  <script src="{%static 'js/alpine.js'%}"></script>
+
+</head>
+
+<body>
+  <header x-data="{ isOpen: false }" class="bg-white shadow">
+    <nav class="container mx-0 px-5 bg-blue-700 max-w-full">
+      <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <a class="text-white text-lg font-bold md:text-xl hover:text-yellow-700" href="#">My Blog</a>
+          </div>
+          <!-- Mobile menu button -->
+          <div class="flex md:hidden">
+            <button @click="isOpen = !isOpen" type="button"
+              class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu">
+              <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                <path fill-rule="evenodd"
+                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
+                </path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+        <div class="md:flex items-center" :class="isOpen ? 'block' : 'hidden'">
+          <div class="flex flex-col mt-2 md:flex-row md:mt-0 md:mx-1">
+
+          </div>
+          <div class="user flex items-center">
+            <!-- Search input on desktop screen -->
+            <div class="mx-10 hidden md:block">
+              <a href="{% url 'search' %}" class="text-white hover:text-underline">Search</a>
+            </div>
+            <div class="flex items-center py-2 -mx-1 md:mx-0 text-white">
+              {% if request.user.is_authenticated %}
+              Hello {{ request.user.first_name|default:request.user.username }},
+              <form action="{% url 'accounts:logout'%}" method="post">
+                {% csrf_token %}
+                <button type="submit"
+                  class="block w-1/2 px-4 py-2 mx-1 rounded-l-full text-center text-sm bg-green-500 font-medium text-white leading-5 hover:bg-blue-600 md:mx-2 md:w-auto">Logout</button>
+              </form>
+              {% else %}
+              <a class="block w-1/2 px-4 py-2 mx-1 rounded-l-full text-center text-sm bg-green-500 font-medium text-white leading-5 hover:bg-blue-600 md:mx-2 md:w-auto"
+                href="{% url 'accounts:login' %}">Login</a>
+              {% endif %}
+              <a class="block w-1/2 px-3 py-2 mx-1 rounded-r-full text-center text-sm bg-red-500 font-medium text-white leading-5 hover:bg-blue-600 md:mx-0 md:w-auto"
+                href="{% url 'accounts:register' %}">Register</a>
+            </div>
+          </div>
+          <!-- Search input on mobile screen -->
+          <div class="mt-3 md:hidden">
+            <input type="text"
+              class="w-full px-4 py-3 leading-tight text-sm text-gray-700 bg-gray-100 rounded-md placeholder-gray-500 focus:outline-none focus:bg-white focus:shadow-outline"
+              placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+      </div>
+
+
+    </nav>
+  </header>
+
+  {%block content%}
+
+  {%endblock%}
+           
+  <footer class="flex justify-center h-12 bg-indigo-700 text-white mb-2 py-3 ">&copy; Copyrights Infomation Technology Concern
+    2023 MyPortfolio
+    Hire Me: <a href="mailto:">uniqueverticals@gmail.com</a>
+    <span class="flex ml-2">
+      <a href="https://api.whatsapp.com/send?phone=923457608966&text=Hello this is the starting message" target="_blank" class="flex items-center;">
+      <img src="{% static 'img/whatsapp.jpg' %}" alt="WhatsApp Button" class="h-8 w-8">
+      <span style="margin-left: 3px;">+923457608966</span>
+      </a>
+      </span>
+  </footer>
+</body>
+
+</html>

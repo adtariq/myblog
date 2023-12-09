@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center mt-8">
+  <div class="w-full lg:w-3/4">
+    {% if query %}
+    <p>Posts containing :<span class="font-bold"> {{ query }}</span></p>
+    <h3 class="font-semibold text-xl">
+      {% with results.count as total_results %}
+      Found :{{ total_results }}
+      <br>
+      result :{{ total_results|pluralize }}
+      {% endwith %}
+    </h3>
+    {% for post in results %}
+    <h4 class="font-bold">
+      <a href="{{ post.get_absolute_url }}">
+        {{ post.title }}
+      </a>
+    </h4>
+    {{ post.content|truncatewords_html:12 }}
+    {% empty %}
+    <p>There are no results for your query.</p>
+    {% endfor %}
+    <a href="{% url 'search' %}"
+        class="block w-1/2 my-3 py-2 rounded-lg bg-green-500 text-white text-center font-semibold hover:bg-green-600 hover:cursor-pointer">Search
+        again</a>
+    {% else %}
+
+    <form method="get" class="space-y-4">
+      <h1 class="blink bg-red-500 text-white text-xl text-center my-2 py-1">Search for posts</h1>
+      {{ form.as_p }}
+      <style>
+        #id_query {
+          width: 250px;
+          height: 35px;
+          border: 1px solid black;
+          border-radius: 5px;
+          margin-top: 20px;
+          padding-left: 3px;
+
+        }
+      </style>
+      <input type="submit" value="Search"
+        class="w-full bg-green-500 text-white text-xl text-center my-2 py-1 hover:bg-green-600 hover:cursor-pointer">
+
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
